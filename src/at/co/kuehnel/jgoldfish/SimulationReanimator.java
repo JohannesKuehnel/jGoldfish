@@ -98,9 +98,9 @@ public class SimulationReanimator extends Simulation{
             }
             //Land to play? Do so
             
-            //Goryo's Vengeance + Target ready?
             do
             {
+                //Goryo's Vengeance + Target ready?
                 if(hand.contains(GORYO) && mana >= 2) {
                     if(graveyard.contains(EMRAKUL) && (!graveyard.contains(GRISELBRAND) || damage >= 5) && !board.contains(EMRAKUL))
                     {
@@ -117,29 +117,29 @@ public class SimulationReanimator extends Simulation{
                         board.add(GRISELBRAND);
                     }
                 }
+                //Goryo's Vengeance + Target ready?
+
+                //Through the Breach
+                if(hand.contains(BREACH) && mana >= 5)
+                {
+                    if(hand.contains(EMRAKUL) && (!hand.contains(GRISELBRAND) || damage >= 5))
+                    {
+                        hand.remove(BREACH);
+                        hand.remove(EMRAKUL);
+                        mana -= 5;
+                        board.add(EMRAKUL);
+                    }
+                    else if(hand.contains(GRISELBRAND))
+                    {
+                        hand.remove(BREACH);
+                        hand.remove(GRISELBRAND);
+                        mana -= 5;
+                        board.add(GRISELBRAND);
+                    }
+                }
+                //Through the Breach
             }
             while(activateGriselbrand());
-            //Goryo's Vengeance + Target ready?
-            
-            //Through the Breach
-            if(hand.contains(BREACH) && mana >= 5)
-            {
-                if(hand.contains(EMRAKUL) && (!hand.contains(GRISELBRAND) || damage >= 5))
-                {
-                    hand.remove(BREACH);
-                    hand.remove(EMRAKUL);
-                    mana -= 5;
-                    board.add(EMRAKUL);
-                }
-                else if(hand.contains(GRISELBRAND))
-                {
-                    hand.remove(BREACH);
-                    hand.remove(GRISELBRAND);
-                    mana -= 5;
-                    board.add(GRISELBRAND);
-                }
-            }
-            //Through the Breach
             
             // ATTACK PHASE
             attack();
