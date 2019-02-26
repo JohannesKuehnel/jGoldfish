@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-/**
- *
- * @author h3llsp4wn
- */
+/*
+    This is the base class for the simulation. You probably don't need to edit this.
+    If you want to add your own deck simulation, take a look at SimulationReanimator.java
+*/
 public abstract class Simulation {
     public List<String> hand;
     public List<String> library;

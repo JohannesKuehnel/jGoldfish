@@ -1,15 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package jgoldfish;
 
 import java.util.Iterator;
 
-/**
- *
- * @author h3llsp4wn
- */
+/*
+    Example simulation for Modern deck 'Reanimator'
+*/
 public class SimulationReanimator extends Simulation{
     String GORYO = "Goryo's Vengeance";
     String GRISELBRAND = "Griselbrand";
