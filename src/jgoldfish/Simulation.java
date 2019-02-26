@@ -139,8 +139,8 @@ public abstract class Simulation {
         //System.out.println("======== PROBABILITY TO DRAW " + card + " BEGIN ========");
         int total = library.size(); // 60
         int success = isInDeck(card); // 0-4
-        int sample = draws; // 7 für Starthand
-        int sampleSuccess = amount; // 0 keins, 1 genau eines usw.
+        int sample = draws; // 7 for opening hand
+        int sampleSuccess = amount; // 0 none, 1 exactly one etc.
         double result = hypergeom(total, success, sample, sampleSuccess);
         //System.out.println("======== PROBABILITY TO DRAW " + card + " END ========");
         return result;
@@ -150,8 +150,8 @@ public abstract class Simulation {
         System.out.println("======== PROBABILITY TO DRAW " + card + " BEGIN ========");
         int total = library.size(); // 60
         int success = isInDeck(card); // 0-4
-        int sample = 7; // 7 für Starthand
-        int sampleSuccess = 0; // 0 keins, 1 genau eines usw.
+        int sample = 7; // 7 for opening hand
+        int sampleSuccess = 0; // 0 none, 1 exactly one etc.
         for(int i = 0; i < 7; i++)
         {
             double result = 1 - hypergeom(total, success, sample+i, sampleSuccess);

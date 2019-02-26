@@ -15,6 +15,14 @@ jGoldfish is a Java program to simulate _goldfishing_ [1] of Magic: The Gatherin
   * Argument 3 is the number of games the program simulates. Default is `1,000,000`.
   * Argument 4 is the maximum number of turns you want a game to be played out. Default is `10`.
 
+## Extras
+
+In `Simulation.java` you can find some convenience methods to calculate probabilities.
+
+* `probabilityToDrawCard(String card, int draws, int amount)` - Return the probability of drawing the specific card `card` with `draws` draws and `amount` copies left in the deck.
+* `probabilityToDrawCardPerTurn(String card)` - Prints the probabilities of drawing the specific card `card` in a deck for the first seven turns.
+* `probabilityToDrawHand(List<String> hand)` - Prints the probability of having a specific opening hand.
+
 ## Authors
 * **Johannes Kühnel** - https://github.com/JohannesKuehnel
 

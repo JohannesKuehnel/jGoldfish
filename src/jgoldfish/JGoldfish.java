@@ -58,7 +58,7 @@ public class JGoldfish {
         {
             stats[test.play() - 1] += 1;
         }
-        System.out.println("======== STATISTIK ========");
+        System.out.println("======== STATISTICS ========");
         for (int i = 0; i < test.turnMax; i++)
         {
             System.out.println("Turn " + (i + 1) + ": " + stats[i] + " (" + 100 * ((float)stats[i] / (float)simulations) + "%)");
