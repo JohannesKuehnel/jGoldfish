@@ -1,4 +1,4 @@
-package jgoldfish;
+package at.co.kuehnel.jgoldfish;
 
 import java.lang.reflect.Constructor;
 
@@ -19,7 +19,7 @@ public class JGoldfish {
             System.out.println("Using '" + deck + "'.");
         }
         Simulation test = null;
-        String className = "jgoldfish.Simulation" + deck;
+        String className = Simulation.class.getPackage().getName() + ".Simulation" + deck;
         try {
             Class<?> simulationClass = Class.forName(className);
             Constructor<?> constructor = simulationClass.getConstructor();

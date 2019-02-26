@@ -1,4 +1,4 @@
-package jgoldfish;
+package at.co.kuehnel.jgoldfish;
 
 import java.util.Iterator;
 
