@@ -10,7 +10,7 @@ If you are compiling the source (`src/`) yourself, you will need the Java Develo
 
 ## Usage
 
-# Run the JAR-file
+### Run the JAR-file
 ```
 java -jar ./bin/jGoldfish.jar
 ```
@@ -47,7 +47,7 @@ Turn 9: 23560 (2.356%)
 Turn 10: 903280 (90.328%)
 ```
 
-# Compile the source code yourself
+### Compile the source code yourself
 
 Just use the shell script `./run.sh` to compile and run the code. Arguments are the same as for the JAR-file.
 
