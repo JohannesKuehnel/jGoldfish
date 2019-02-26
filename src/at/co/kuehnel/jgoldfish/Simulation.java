@@ -1,9 +1,9 @@
 package at.co.kuehnel.jgoldfish;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 /*
     This is the base class for the simulation. You probably don't need to edit this.
@@ -26,6 +26,7 @@ public abstract class Simulation {
     public boolean hasLandDropLeft;
     public int damage;
     public int hp;
+    public int poison;
     
     public Simulation()
     {
@@ -45,32 +46,36 @@ public abstract class Simulation {
         hasLandDropLeft = true;
         damage = 0;
         hp = 20;
+        poison = 0;
+    }
+
+    public void shuffle() {
+        Collections.shuffle(library);
     }
     
     public void draw(){
-        if(library.isEmpty())
+        if(library.isEmpty()) {
             System.out.println("Cannot draw - Out of cards!");
+            turn = turnMax;
+        }
         else
         {
-            Random generator = new Random(System.currentTimeMillis());
-            //int random = (int) (Math.random() * library.size());
-            int random = generator.nextInt(library.size());
-            //System.out.println(random);
-            String card = library.get(random);
-            library.remove(random);
+            String card = library.get(0);
+            library.remove(0);
             hand.add(card);
-            //System.out.println("Draw: " + card + " (" + library.cards.size() + " cards left in library)");
+            //System.out.println("Draw: " + card + " (" + library.size() + " cards left in library)");
         }
     }
     
-    public void draw(String cardToDraw){
-        if(library.isEmpty() || !library.contains(cardToDraw))
+    public void search(String cardToDraw){
+        if(library.isEmpty() || !library.contains(cardToDraw)) {
             System.out.println("Cannot draw - Out of cards/Card not found!");
+        }
         else
         {
             library.remove(cardToDraw);
             hand.add(cardToDraw);
-            //System.out.println("Draw: " + cardToDraw + " (" + library.cards.size() + " cards left in library)");
+            //System.out.println("Search: " + cardToDraw + " (" + library.size() + " cards left in library)");
         }
     }
     
@@ -111,16 +116,17 @@ public abstract class Simulation {
         board.clear();
         library.addAll(decklist_mb);
         sb.addAll(decklist_sb);
+        shuffle();
     }
     
     public void setHand(List<String> hand){
-        System.out.println("======== SET HAND BEGIN ========");
+        //System.out.println("======== SET HAND BEGIN ========");
         reset();
         this.hand.clear();
         Iterator<String> it = hand.iterator();
         while(it.hasNext())
-            draw((String)it.next());
-        System.out.println("======== SET HAND END ========");
+            search((String)it.next());
+        //System.out.println("======== SET HAND END ========");
     }
     
     public void add(String card, int amount){
