@@ -101,43 +101,50 @@ public class SimulationReanimator extends Simulation{
             do
             {
                 //Goryo's Vengeance + Target ready?
-                if(hand.contains(GORYO) && mana >= 2) {
+                if(hand.contains(GORYO) && hasMana(2)) {
                     if(graveyard.contains(EMRAKUL) && (!graveyard.contains(GRISELBRAND) || damage >= 5) && !board.contains(EMRAKUL))
                     {
                         hand.remove(GORYO);
                         graveyard.remove(EMRAKUL);
-                        mana -= 2;
+                        useMana(2);
                         board.add(EMRAKUL);
                     }
                     else if(graveyard.contains(GRISELBRAND) && !board.contains(GRISELBRAND))
                     {
                         hand.remove(GORYO);
                         graveyard.remove(GRISELBRAND);
-                        mana -= 2;
+                        useMana(2);
                         board.add(GRISELBRAND);
                     }
                 }
                 //Goryo's Vengeance + Target ready?
 
                 //Through the Breach
-                if(hand.contains(BREACH) && mana >= 5)
+                if(hand.contains(BREACH) && hasMana(5))
                 {
                     if(hand.contains(EMRAKUL) && (!hand.contains(GRISELBRAND) || damage >= 5))
                     {
                         hand.remove(BREACH);
                         hand.remove(EMRAKUL);
-                        mana -= 5;
+                        useMana(5);
                         board.add(EMRAKUL);
                     }
                     else if(hand.contains(GRISELBRAND))
                     {
                         hand.remove(BREACH);
                         hand.remove(GRISELBRAND);
-                        mana -= 5;
+                        useMana(5);
                         board.add(GRISELBRAND);
                     }
                 }
                 //Through the Breach
+
+                if(hand.contains(PRISM) && hasMana(2)) {
+                    useMana(2);
+                    hand.remove(PRISM);
+                    board.add(PRISM);
+                    board.add(PRISM);
+                }
             }
             while(activateGriselbrand());
             
@@ -182,6 +189,56 @@ public class SimulationReanimator extends Simulation{
         }
         return false;
     }
+
+    public boolean hasMana(int amount) {
+        int availableMana = 0;
+        for (String card : hand) {
+            if(card.equals(SSG))
+                availableMana++;
+        }
+        for (String card : board) {
+            if(card.equals(PRISM))
+                availableMana++;
+        }
+        availableMana += mana;
+        return availableMana >= amount;
+    }
+
+    public boolean useMana(int amount) {
+        if (amount <= 0) {
+            return false;
+        }
+
+        int ssg = 0;
+        int prism = 0;
+        for (String card : hand) {
+            if(card.equals(SSG))
+                ssg++;
+        }
+        for (String card : board) {
+            if(card.equals(PRISM))
+                prism++;
+        }
+        if((mana + ssg + prism) < amount)
+            return false;
+
+        while(mana > 0 && amount > 0) {
+            mana--;
+            amount--;
+        }
+        while(prism > 0 && amount > 0) {
+            prism--;
+            amount--;
+            board.remove(PRISM);
+        }
+        while(ssg > 0 && amount > 0) {
+            ssg--;
+            amount--;
+            board.remove(SSG);
+        }
+
+        return true;
+    }
     
     public void attack(){
         if (board.contains(EMRAKUL)) {
@@ -225,12 +282,9 @@ public class SimulationReanimator extends Simulation{
     
 }
 
-/* TODO
- * 
- * SSG as mana source
- * Pentad Prism as mana source
- * use Looting and Charm
- * use Sleight of Hand
- * use Spoils
- * sequencing and looping of casting checks
+/* 
+ * TODO: use Looting and Charm
+ * TODO: use Sleight of Hand
+ * TODO: use Spoils
+ * TODO: sequencing and looping of casting checks
  */
