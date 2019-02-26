@@ -53,6 +53,13 @@ public class JGoldfish {
             test.turnMax = MAX_TURNS;
         }
 
+        try {
+            test.DEBUG = Integer.parseInt(args[4].trim()) == 1;
+            System.out.println("DEBUG " + test.DEBUG);
+        } catch (Exception e) {
+            System.out.println("No valid DEBUG flag provided. Using default value: 0 (off)");
+        }
+
         int[] stats = new int[test.turnMax];
         for (int i = 0; i < simulations; i++)
         {

@@ -18,6 +18,7 @@ public abstract class Simulation {
     public List<String> decklist_sb;
     public List<String> graveyard;
     public List<String> board;
+    public boolean DEBUG = false;
     public boolean otp;
     public int turn;
     public int turnMax;
@@ -56,7 +57,7 @@ public abstract class Simulation {
     
     public void draw(){
         if(library.isEmpty()) {
-            System.out.println("Cannot draw - Out of cards!");
+            debug("Cannot draw - Out of cards!");
             turn = turnMax;
         }
         else
@@ -64,19 +65,19 @@ public abstract class Simulation {
             String card = library.get(0);
             library.remove(0);
             hand.add(card);
-            //System.out.println("Draw: " + card + " (" + library.size() + " cards left in library)");
+            //debug("Draw: " + card + " (" + library.size() + " cards left in library)");
         }
     }
     
     public void search(String cardToDraw){
         if(library.isEmpty() || !library.contains(cardToDraw)) {
-            System.out.println("Cannot draw - Out of cards/Card not found!");
+            debug("Cannot draw - Out of cards/Card not found!");
         }
         else
         {
             library.remove(cardToDraw);
             hand.add(cardToDraw);
-            //System.out.println("Search: " + cardToDraw + " (" + library.size() + " cards left in library)");
+            //debug("Search: " + cardToDraw + " (" + library.size() + " cards left in library)");
         }
     }
     
@@ -121,40 +122,40 @@ public abstract class Simulation {
     }
     
     public void setHand(List<String> hand){
-        //System.out.println("======== SET HAND BEGIN ========");
+        //debug("======== SET HAND BEGIN ========");
         reset();
         this.hand.clear();
         Iterator<String> it = hand.iterator();
         while(it.hasNext())
             search((String)it.next());
-        //System.out.println("======== SET HAND END ========");
+        //debug("======== SET HAND END ========");
     }
     
     public void add(String card, int amount){
-        //System.out.println("Add " + amount + " " + card + " to the deck");
+        //debug("Add " + amount + " " + card + " to the deck");
         for(int i = 0; i < amount; i++)
             library.add(card);
     }
     
     public void addSB(String card, int amount){
-        //System.out.println("Add " + amount + " " + card + " to the deck");
+        //debug("Add " + amount + " " + card + " to the deck");
         for(int i = 0; i < amount; i++)
             sb.add(card);
     }
     
     public double probabilityToDrawCard(String card, int draws, int amount){
-        //System.out.println("======== PROBABILITY TO DRAW " + card + " BEGIN ========");
+        //debug("======== PROBABILITY TO DRAW " + card + " BEGIN ========");
         int total = library.size(); // 60
         int success = isInDeck(card); // 0-4
         int sample = draws; // 7 for opening hand
         int sampleSuccess = amount; // 0 none, 1 exactly one etc.
         double result = hypergeom(total, success, sample, sampleSuccess);
-        //System.out.println("======== PROBABILITY TO DRAW " + card + " END ========");
+        //debug("======== PROBABILITY TO DRAW " + card + " END ========");
         return result;
     }
     
     public void probabilityToDrawCardPerTurn(String card){
-        System.out.println("======== PROBABILITY TO DRAW " + card + " BEGIN ========");
+        debug("======== PROBABILITY TO DRAW " + card + " BEGIN ========");
         int total = library.size(); // 60
         int success = isInDeck(card); // 0-4
         int sample = 7; // 7 for opening hand
@@ -162,14 +163,14 @@ public abstract class Simulation {
         for(int i = 0; i < 7; i++)
         {
             double result = 1 - hypergeom(total, success, sample+i, sampleSuccess);
-            System.out.println("Turn " + (i+1) + ": " + result*100 + "%");
+            debug("Turn " + (i+1) + ": " + result*100 + "%");
         }
-        System.out.println("======== PROBABILITY TO DRAW " + card + " END ========");
+        debug("======== PROBABILITY TO DRAW " + card + " END ========");
     }
     
     public void probabilityToDrawHand(List<String> hand){
-        System.out.println("======== PROBABILITY TO DRAW HAND BEGIN ========"); 
-        System.out.println(hand);
+        debug("======== PROBABILITY TO DRAW HAND BEGIN ========"); 
+        debug(hand.toString());
         double probability = 1.0;
         HashMap<String, Integer> desiredCards = new HashMap<String, Integer>();
         Iterator<String> it = hand.iterator();
@@ -187,13 +188,13 @@ public abstract class Simulation {
         while(it.hasNext())
         {
             String card = (String) it.next();
-            // System.out.println(desiredCards.get(card) + " " + card + " with " + isInDeck(card) + " copies in deck of size " + library.size());
+            // debug(desiredCards.get(card) + " " + card + " with " + isInDeck(card) + " copies in deck of size " + library.size());
             double result = hypergeom(library.size(), isInDeck(card), 7, desiredCards.get(card));
             probability *= result;
-            // System.out.println(result*100 + " chance");
+            // debug(result*100 + " chance");
         }
-        System.out.println(probability*100 + "% chance to have this opener");
-        System.out.println("======== PROBABILITY TO DRAW HAND END ========");
+        debug(probability*100 + "% chance to have this opener");
+        debug("======== PROBABILITY TO DRAW HAND END ========");
     }
     
     public double hypergeom(int totalSize, int successSize, int sampleSize, int sampleSuccessSize){
@@ -224,33 +225,39 @@ public abstract class Simulation {
     
     public void printHand(){
         if(hand.isEmpty())
-            System.out.println("======== HAND EMPTY ========");
+            debug("======== HAND EMPTY ========");
         else
         {
             Iterator<String> it = hand.iterator();
-            System.out.println("======== HAND BEGIN ========");
+            debug("======== HAND BEGIN ========");
             while(it.hasNext()){
                 String card = "";
                 card = (String) it.next();
-                System.out.println(card);
+                debug(card);
             }
-            System.out.println("======== HAND END ========");
+            debug("======== HAND END ========");
         }
     }
     
     public void printLibrary(){
         if(library.isEmpty())
-            System.out.println("======== DECKLIST EMPTY ========");
+            debug("======== DECKLIST EMPTY ========");
         else
         {
             Iterator<String> it = library.iterator();
-            System.out.println("======== DECKLIST BEGIN ========");
+            debug("======== DECKLIST BEGIN ========");
             while(it.hasNext()){
                 String card = "";
                 card = (String) it.next();
-                System.out.println(card);
+                debug(card);
             }
-            System.out.println("======== DECKLIST END ========");
+            debug("======== DECKLIST END ========");
+        }
+    }
+
+    public void debug(String msg) {
+        if(DEBUG) {
+            System.out.println(msg);
         }
     }
     

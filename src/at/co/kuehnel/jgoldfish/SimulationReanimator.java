@@ -63,23 +63,23 @@ public class SimulationReanimator extends Simulation{
             return false;
         }
         
-        //System.out.println("======== Take a mulligan ========");
+        //debug("======== Take a mulligan ========");
         return true;
     }
 
     @Override
     public int play() {
-        //System.out.println("======== Start game ========");
+        //debug("======== Start game ========");
         init();
         do{
             reset();
             draw(cardsToDraw);
         }
         while(isMulligan());
-        //System.out.println("======== Keeping hand ========");
+        //debug("======== Keeping hand ========");
         while(turn < turnMax)
         {
-            //System.out.println("======== Turn " + turn + " ========");
+            //debug("======== Turn " + turn + " ========");
             //DRAW PHASE
             hasLandDropLeft = true;
             if(turn > 1 || !otp)

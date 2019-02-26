@@ -23,6 +23,7 @@ java -jar ./bin/jGoldfish.jar Reanimator otp 100000 10
   * Argument 2 (otp) is whether you want to simulate on-the-play (`otp`) or on-the-draw (`otd`) behavior. Default is `otp`.
   * Argument 3 (game limit) is the number of games the program simulates. Default is `1,000,000`.
   * Argument 4 (turn limit) is the maximum number of turns you want a game to be played out. Default is `10`.
+  * Argument 5 (debug) enables debug output via the `debug(String msg)` method. You should turn this off, if you use a game limit over 1. Default is `0` (off).
 
 The program outputs the number of games won on each turn up to your turn limit. The number shown at the turn limit includes all games which would have ended after this one.
 
