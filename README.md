@@ -4,18 +4,20 @@ jGoldfish is a Java program to simulate _goldfishing_ [1] of Magic: The Gatherin
 [1] According to [Gamepedia](https://mtg.gamepedia.com/Goldfishing), goldfishing is "the practice of playing without an opponent as in drawing a starting hand and proceeding to continue to play until an opponent who does nothing to stop you from accomplishing the gameplan is defeated".
 
 ## Requirements
-Running the JAR-File in `dist/` requires the Java Runtime Environemnt (JRE) 8 or later.
+Running the JAR-File in `bin/` requires the Java Runtime Environemnt (JRE) 8 or later.
 
 If you are compiling the source (`src/`) yourself, you will need the Java Development Kit (JDK) 8 or later.
 
 ## Usage
-1. Compile the source code (commands are used from project root)
-```javac -d bin -sourcepath src src/at/co/kuehnel/jgoldfish/*.java```
 
-2. Run the the code with
-```java -cp bin at.co.kuehnel.jgoldfish.JGoldfish```
+# Run the JAR-file
+```
+java -jar ./bin/jGoldfish.jar
+```
 or optionally with arguments
-```java -cp bin at.co.kuehnel.jgoldfish.JGoldfish Reanimator otp 100000 10```
+```
+java -jar ./bin/jGoldfish.jar Reanimator otp 100000 10
+```
 
   * Argument 1 (deck) is the name of your simulation class, prefixed with `Simulation`. If you named your class `SimulationReanimator`, the argument should be `Reanimator`. Default is `Reanimator`.
   * Argument 2 (otp) is whether you want to simulate on-the-play (`otp`) or on-the-draw (`otd`) behavior. Default is `otp`.
@@ -44,6 +46,28 @@ Turn 8: 22890 (2.289%)
 Turn 9: 23560 (2.356%)
 Turn 10: 903280 (90.328%)
 ```
+
+# Compile the source code yourself
+
+Just use the shell script `./run.sh` to compile and run the code. Arguments are the same as for the JAR-file.
+
+Alternatively, manually enter the commands:
+
+1. Compile the source code (commands are used from project root)
+```
+javac -d bin -sourcepath src src/at/co/kuehnel/jgoldfish/*.java
+```
+
+2. Run the the code with
+```
+java -cp bin at.co.kuehnel.jgoldfish.JGoldfish
+```
+or optionally with arguments
+```
+java -cp bin at.co.kuehnel.jgoldfish.JGoldfish Reanimator otp 100000 10
+```
+
+3. If you want to build a JAR-file yourself, just run `./buildJar.sh`.
 
 ## Add your own deck
 
