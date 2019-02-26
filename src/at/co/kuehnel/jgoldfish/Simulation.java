@@ -2,6 +2,7 @@ package at.co.kuehnel.jgoldfish;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -167,19 +168,32 @@ public abstract class Simulation {
     }
     
     public void probabilityToDrawHand(List<String> hand){
-       System.out.println("======== PROBABILITY TO DRAW HAND BEGIN ========"); 
-       System.out.println(hand);
-       double probability = 1.0;
-       Iterator<String> it = hand.iterator();
-       while(it.hasNext())
-       {
-           String card = (String) it.next();
-           probability *= (double) isInDeck(card)/library.size();
-           library.remove(card);
-       } // Reihenfolge?
-       reset();
-       System.out.println(probability*100 + "% chance to have this opener");
-       System.out.println("======== PROBABILITY TO DRAW HAND END ========");
+        System.out.println("======== PROBABILITY TO DRAW HAND BEGIN ========"); 
+        System.out.println(hand);
+        double probability = 1.0;
+        HashMap<String, Integer> desiredCards = new HashMap<String, Integer>();
+        Iterator<String> it = hand.iterator();
+        while(it.hasNext())
+        {
+            String card = (String) it.next();
+            if (desiredCards.get(card) != null) {
+                desiredCards.replace(card, desiredCards.get(card) + 1);
+            } else {
+                desiredCards.put(card, 1);
+            }
+        }
+
+        it = desiredCards.keySet().iterator();
+        while(it.hasNext())
+        {
+            String card = (String) it.next();
+            // System.out.println(desiredCards.get(card) + " " + card + " with " + isInDeck(card) + " copies in deck of size " + library.size());
+            double result = hypergeom(library.size(), isInDeck(card), 7, desiredCards.get(card));
+            probability *= result;
+            // System.out.println(result*100 + " chance");
+        }
+        System.out.println(probability*100 + "% chance to have this opener");
+        System.out.println("======== PROBABILITY TO DRAW HAND END ========");
     }
     
     public double hypergeom(int totalSize, int successSize, int sampleSize, int sampleSuccessSize){
@@ -194,14 +208,15 @@ public abstract class Simulation {
         double result = 0;
         if(k == 0)
             return 1;
-        else if(2*k > n)
-            result = binomial(n, n-k);
+        else if(k == 1)
+            result = binomial(n, n-1);
         else
         {
-            result = n-k+1;
+            result = n;
             for(int i = 2; i <= k; i++){
-                result *= (n-k+i);
-                result /= i;
+                double tmp = ( n - ( i - 1) );
+                tmp /= i;
+                result *= tmp;
             }
         }
         return result;
