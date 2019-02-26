@@ -1,5 +1,5 @@
 # jGoldfish
-jGoldfish is a Java program to simulate _goldfishing_ [1] of Magic: The Gathering decks. An example file for Reanimator (Format: Modern) is provided.
+jGoldfish is a Java program to simulate _goldfishing_ [1] of Magic: The Gathering decks. An example file (`SimulationReanimator.java`) for Reanimator (Format: Modern) is provided.
 
 [1] According to [Gamepedia](https://mtg.gamepedia.com/Goldfishing), goldfishing is "the practice of playing without an opponent as in drawing a starting hand and proceeding to continue to play until an opponent who does nothing to stop you from accomplishing the gameplan is defeated".
 
@@ -10,12 +10,12 @@ If you are compiling the source (`src/`) yourself, you will need the Java Develo
 
 ## Usage
 1. Compile the source code (commands are used from project root)
-`javac -d bin -sourcepath src src/at/co/kuehnel/jgoldfish/*.java`
+```javac -d bin -sourcepath src src/at/co/kuehnel/jgoldfish/*.java```
 
 2. Run the the code with
-`java -cp bin at.co.kuehnel.jgoldfish.JGoldfish`
+```java -cp bin at.co.kuehnel.jgoldfish.JGoldfish```
 or optionally with arguments
-`java -cp bin at.co.kuehnel.jgoldfish.JGoldfish Reanimator otp 100000 10`
+```java -cp bin at.co.kuehnel.jgoldfish.JGoldfish Reanimator otp 100000 10```
 
   * Argument 1 (deck) is the name of your simulation class, prefixed with `Simulation`. If you named your class `SimulationReanimator`, the argument should be `Reanimator`. Default is `Reanimator`.
   * Argument 2 (otp) is whether you want to simulate on-the-play (`otp`) or on-the-draw (`otd`) behavior. Default is `otp`.
@@ -44,6 +44,15 @@ Turn 8: 22890 (2.289%)
 Turn 9: 23560 (2.356%)
 Turn 10: 903280 (90.328%)
 ```
+
+## Add your own deck
+
+To add your own deck, just copy the file `SimulationReanimator.java` under `src/at/co/kuehnel/jgoldfish/` and name it with the prefix `Simulation` and the suffix `.java`, for example `SimulationBurn.java`.
+
+In the file, change the class and constructor name to `SimulationBurn`. Change the deck list, win condition, mulligan rules etc to your liking.
+
+If you are done, compile your code as described above under *Usage* and run the code with
+```java -cp bin at.co.kuehnel.jgoldfish.JGoldfish Burn```
 
 ## Extras
 
