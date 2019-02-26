@@ -139,7 +139,7 @@ public class SimulationReanimator extends Simulation{
                 }
                 //Through the Breach
 
-                if(hand.contains(PRISM) && hasMana(2)) {
+                if(hand.contains(PRISM) && mana >= 2) { // do not cast Prism with SSG or Prism
                     useMana(2);
                     hand.remove(PRISM);
                     board.add(PRISM);
