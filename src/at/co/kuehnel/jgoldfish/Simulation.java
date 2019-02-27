@@ -18,6 +18,7 @@ public abstract class Simulation {
     public List<String> decklist_sb;
     public List<String> graveyard;
     public List<String> board;
+    public List<String> exile;
     public boolean DEBUG = false;
     public boolean otp;
     public int turn;
@@ -65,7 +66,7 @@ public abstract class Simulation {
             String card = library.get(0);
             library.remove(0);
             hand.add(card);
-            //debug("Draw: " + card + " (" + library.size() + " cards left in library)");
+            debug("Draw: " + card + " (" + library.size() + " cards left in library)");
         }
     }
     

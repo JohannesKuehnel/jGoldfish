@@ -54,11 +54,13 @@ public class SimulationAdNauseam extends Simulation{
 
     @Override
     public boolean isWin() {
-        if (hand.contains(ADNAUSEAM) && (
-                (availableMana(6) && hand.contains(GRACE)) 
-                || (board.contains(UNLIFE) && availableMana(5))
-            )) {
-            return true;
+        // TODO: add all winning lines, including win con check
+        if ( hand.contains(ADNAUSEAM) ) {
+            if( board.contains(UNLIFE) && availableMana(5) ) {
+                return true;
+            } else if ( availableMana(6) && hand.contains(GRACE) ) {
+                return true;
+            }
         }
         return false;
     }
@@ -141,37 +143,30 @@ public class SimulationAdNauseam extends Simulation{
                 }
                 //Land to play? Do so
 
+                if(isWin())
+                    break;
+
                 /* 
                 * TODO: sequencing and looping of casting checks
                 */
 
                 if(hand.contains(LOTUS)) {
                     hand.remove(LOTUS);
+                    debug("Suspending " + LOTUS);
                     SuspendedCard lotus = new SuspendedCard(LOTUS, 3);
                     suspendedCards.add(lotus);
                 }
 
-                if(board.contains(UNLIFE) && availableMana(5) && hand.contains(ADNAUSEAM)) {
-                    if(cast(ADNAUSEAM)) {
-                        return turn;
-                    }
-                } else if (availableMana(6) && hand.contains(ADNAUSEAM) && hand.contains(GRACE)) {
-                    cast(GRACE);
-                    if(cast(ADNAUSEAM)) {
-                        return turn;
-                    }
-                }
-
-                if(!board.contains(UNLIFE) && hand.contains(UNLIFE) && availableMana(3)) {
-                    cast(UNLIFE);
+                if(!board.contains(UNLIFE) && cast(UNLIFE, 3)) {
                     possiblePlays = true;
+                    continue;
                 }
 
-                if(hand.contains(PRISM) && mana >= 2) { // do not cast Prism with Lotus, SSG or Prism
-                    cast(PRISM);
+                if(mana >= 2 && cast(PRISM, 2)) { // do not cast Prism with Lotus, SSG or Prism
+                    //
                 }
 
-                if(cast(SERUM)) {
+                if(cast(SERUM, 1)) {
                     possiblePlays = true;
                 }
             }
@@ -188,34 +183,39 @@ public class SimulationAdNauseam extends Simulation{
         return turn;
     }
 
-    public boolean cast(String card) {
+    public boolean cast(String card, int mana) {
         if(hand.contains(card) && availableMana(mana)) {
             debug("Casting " + card);
             hand.remove(card);
+            useMana(mana);
             if(card.equals(ADNAUSEAM)) {
-                useMana(5);
                 // TODO: check if mana + wincon is available
             } else if (card.equals(UNLIFE)) {
-                useMana(3);
                 board.add(UNLIFE);
                 debug(board.toString());
             } else if (card.equals(GRACE)) {
-                useMana(1);
                 activeAngelsGrace = true;
             } else if (card.equals(PRISM)) {
-                useMana(2);
                 board.add(PRISM);
                 board.add(PRISM);
                 debug(board.toString());
             } else if (card.equals(SERUM)) {
-                useMana(1);
                 draw();
-                // TODO: add scry 2
+                for(int i = 1; i >= 0; i--) {
+                    String topCard = library.get(i);
+                    if ( hand.contains(ADNAUSEAM) && !board.contains(UNLIFE) && !(topCard.equals(UNLIFE) || topCard.equals(GRACE))
+                        || (hand.contains(UNLIFE) || hand.contains(GRACE)) && !topCard.equals(ADNAUSEAM)
+                        || (hand.contains(UNLIFE) || hand.contains(GRACE) || board.contains(UNLIFE)) && hand.contains(ADNAUSEAM) && !(topCard.equals(PRISM) || topCard.equals(LAND)) ) {
+                        debug("Scrying " + topCard + " to the bottom");
+                        library.remove(i);
+                        library.add(topCard);
+                    } else {
+                        debug("Scrying " + topCard + " to the top");
+                    }
+                }
             } else if (card.equals(SLEIGHT)) {
-                useMana(1);
                 // TODO add Sleight of Hands logic
             } else if (card.equals(SPOILS)) {
-                useMana(1);
                 // TODO add Spoils of the Vault logic
             }
             return true;
@@ -243,6 +243,7 @@ public class SimulationAdNauseam extends Simulation{
             if(card.removeTimeCounter() == 0) {
                 debug("Casting suspended " + card.getName());
                 board.add(card.getName());
+                debug(board.toString());
                 it.remove();
             }
         }
@@ -321,6 +322,7 @@ public class SimulationAdNauseam extends Simulation{
             amount -= amount >= 3 ? 3 : amount;
             board.remove(LOTUS);
         }
+        // TODO: restrict SSG usage
         while(ssg > 0 && amount > 0) {
             ssg--;
             amount--;
