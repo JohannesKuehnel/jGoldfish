@@ -3,7 +3,6 @@ package at.co.kuehnel.jgoldfish;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /*
     Example simulation for Modern deck 'Ad Nauseam'
@@ -70,11 +69,13 @@ public class SimulationAdNauseam extends Simulation{
         //less than TWO lands
         if(hand.size() >= 5)
         {
-            if(isInHand("Land") >= 2)
+            if( hasLands(2) && hasComboPiece() )
                 return false;
-        } else if(hand.size() < 5 && hand.size() > 2)
+            if( hasLands(1) && hasComboPiece() && hasFastMana() )
+                return false;
+        } else if( hand.size() < 5 && hand.size() > 2 )
         {
-            if(hand.contains("Land"))
+            if( hand.contains(LAND) && (hasComboPiece() || hasCantrip()) )
                 return false;
         } else if(hand.size() <= 2)
         {
@@ -83,6 +84,22 @@ public class SimulationAdNauseam extends Simulation{
         
         debug("======== Take a mulligan ========");
         return true;
+    }
+
+    private boolean hasComboPiece() {
+        return hand.contains(ADNAUSEAM) || hand.contains(GRACE) || hand.contains(UNLIFE);
+    }
+
+    private boolean hasFastMana() {
+        return hand.contains(LOTUS) || hand.contains(PRISM) || hand.contains(SSG);
+    }
+
+    private boolean hasLands(int amount) {
+        return isInHand(LAND) >= amount;
+    }
+
+    private boolean hasCantrip() {
+        return hand.contains(SERUM) || hand.contains(SLEIGHT) || hand.contains(SPOILS);
     }
 
     @Override
@@ -125,9 +142,6 @@ public class SimulationAdNauseam extends Simulation{
                 //Land to play? Do so
 
                 /* 
-                * TODO: use Serum Visions
-                * TODO: use Sleight of Hand
-                * TODO: use Spoils
                 * TODO: sequencing and looping of casting checks
                 */
 
@@ -155,6 +169,10 @@ public class SimulationAdNauseam extends Simulation{
 
                 if(hand.contains(PRISM) && mana >= 2) { // do not cast Prism with Lotus, SSG or Prism
                     cast(PRISM);
+                }
+
+                if(cast(SERUM)) {
+                    possiblePlays = true;
                 }
             }
 
@@ -189,6 +207,16 @@ public class SimulationAdNauseam extends Simulation{
                 board.add(PRISM);
                 board.add(PRISM);
                 debug(board.toString());
+            } else if (card.equals(SERUM)) {
+                useMana(1);
+                draw();
+                // TODO: add scry 2
+            } else if (card.equals(SLEIGHT)) {
+                useMana(1);
+                // TODO add Sleight of Hands logic
+            } else if (card.equals(SPOILS)) {
+                useMana(1);
+                // TODO add Spoils of the Vault logic
             }
             return true;
         }

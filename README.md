@@ -1,5 +1,5 @@
 # jGoldfish
-jGoldfish is a Java program to simulate _goldfishing_ [1] of Magic: The Gathering decks. An example file (`SimulationReanimator.java`) for Reanimator (Format: Modern) is provided.
+jGoldfish is a Java program to simulate _goldfishing_ [1] of Magic: The Gathering decks. An (incomplete) example file for Modern Reanimator (`SimulationReanimator.java`) and Ad Nauseam (`SimulationAdNauseam.java`) is provided.
 
 [1] According to [Gamepedia](https://mtg.gamepedia.com/Goldfishing), goldfishing is "the practice of playing without an opponent as in drawing a starting hand and proceeding to continue to play until an opponent who does nothing to stop you from accomplishing the gameplan is defeated".
 
@@ -29,23 +29,23 @@ The program outputs the number of games won on each turn up to your turn limit. 
 
 Example Output:
 ```
-C:\Users\h3llsp4wn\Projects\jGoldfish>java -cp bin at.co.kuehnel.jgoldfish.JGoldfish
-No deck specified.
-Using 'Reanimator (Modern)'.
-On the Play: true
-No valid number of simulations provided. Using default value: 1000000
-No valid turn limit provided. Using default value: 10
+jdk@KRAKEN:/Projects/jGoldfish$ ./run.sh AdNauseam otd 1000000 10 0
+Using 'AdNauseam'.
+On the Play: false
+Simulations: 1000000
+Break on Turn 10
+DEBUG false
 ======== STATISTICS ========
 Turn 1: 0 (0.0%)
-Turn 2: 0 (0.0%)
-Turn 3: 0 (0.0%)
-Turn 4: 0 (0.0%)
-Turn 5: 10952 (1.0952%)
-Turn 6: 19204 (1.9204%)
-Turn 7: 20114 (2.0114%)
-Turn 8: 22890 (2.289%)
-Turn 9: 23560 (2.356%)
-Turn 10: 903280 (90.328%)
+Turn 2: 742 (0.0742%)
+Turn 3: 41816 (4.1816%)
+Turn 4: 329185 (32.918503%)
+Turn 5: 127524 (12.7524%)
+Turn 6: 81222 (8.1222%)
+Turn 7: 60788 (6.0787997%)
+Turn 8: 48889 (4.8889%)
+Turn 9: 39489 (3.9489002%)
+Turn 10: 270345 (27.0345%)
 ```
 
 ### Compile the source code yourself
