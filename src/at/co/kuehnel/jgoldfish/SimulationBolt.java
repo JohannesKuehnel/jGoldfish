@@ -1,17 +1,17 @@
 package at.co.kuehnel.jgoldfish;
 
 /*
-    Example simulation for a deck consisting only of 2/2 bears.
+    Example simulation for a deck consisting only of Lightning Bolts (3 damage to any target).
 */
-public class SimulationBear extends Simulation{
-    String BEAR = "Runeclaw Bear";
-    String LAND = "Forest";
+public class SimulationBolt extends Simulation{
+    String BOLT = "Lightning Bolt";
+    String LAND = "Mountain";
     
-    public SimulationBear(){
+    public SimulationBolt(){
         super();
 
-        add(BEAR, 41);
-        add(LAND, 19);
+        add(BOLT, 44);
+        add(LAND, 16);
         
         decklist_mb.addAll(library);
         decklist_sb.addAll(sb);
@@ -30,11 +30,11 @@ public class SimulationBear extends Simulation{
         // less than TWO lands
         if(hand.size() >= 5)
         {
-            if(isInHand(LAND) >= 2 && isInHand(BEAR) >= 2)
+            if(isInHand(LAND) >= 1 && isInHand(BOLT) >= 2)
                 return false;
         } else if(hand.size() < 5 && hand.size() > 2)
         {
-            if(hand.contains(LAND) && hand.contains(BEAR))
+            if(hand.contains(LAND) && hand.contains(BOLT))
                 return false;
         } else if(hand.size() <= 2)
         {
@@ -74,18 +74,14 @@ public class SimulationBear extends Simulation{
                 hasLandDropLeft = false;
             }
             // Land to play? Do so
-
-            // ATTACK PHASE
-            attack();
-            // ATTACK PHASE
             
             // Play as many bears as possible
-            while(playBear())
+            while(playBolt())
             {
-                debug("Casting " + BEAR + ".");
+                debug("Casting " + BOLT + ".");
+                debug(damage + " total damage dealt.");
             }
-            debug(board.toString());
-            // Play as many bears as possible
+            // Play as many Bolts as possible
 
             if(isWin())
                 break;
@@ -118,8 +114,14 @@ public class SimulationBear extends Simulation{
         return mana >= amount;
     }
 
-    public boolean playBear() {
-        return hand.contains(BEAR) && useMana(2) && hand.remove(BEAR) && board.add(BEAR);
+    public boolean playBolt() {
+        if(hand.contains(BOLT) && useMana(1)) {
+            hand.remove(BOLT);
+            damage += 3;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean useMana(int amount) {
@@ -130,14 +132,4 @@ public class SimulationBear extends Simulation{
         mana -= amount;
         return true;
     }
-    
-    public void attack(){
-        for (String card : board) {
-            if (card.equals(BEAR)) {
-                damage += 2;
-            }
-        }
-        debug(damage + " total damage dealt.");
-    }
-    
 }

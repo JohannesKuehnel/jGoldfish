@@ -7,13 +7,13 @@ public class JGoldfish {
     static int SIMULATIONS = 1000000;
     static int MAX_TURNS = 10;
     static boolean ON_THE_PLAY = true;
-    static String DEFAULT_DECK = "Reanimator";
+    static String DEFAULT_DECK = "Bolt";
 
     public static void main(String[] args) {
         String deck = DEFAULT_DECK;
         if (args.length == 0 || args[0].trim().isEmpty()) {
             System.out.println("No deck specified.");
-            System.out.println("Using 'Reanimator (Modern)'.");
+            System.out.println("Using 'Bolt (Lightning Bolts only)'.");
         } else {
             deck = args[0].trim();
             System.out.println("Using '" + deck + "'.");
